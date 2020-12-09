@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+​
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PokeDex</title>
+    ​
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/css/bootstrap.min.css"
+        integrity="sha384-VCmXjywReHh4PwowAiWNagnWcLhlEJLA5buUprzK8rxFgeH0kww/aWY76TfkUoSX" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"
+        integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J"
+        crossorigin="anonymous"></script>
+</head>
+​
+
+<body style="background-color:rgb(0, 0, 0);">
+    <div class="container">
+        <img src="/logo_pokedex.gif" alt="">
+        <div id="contenido">
+            <div class="card">
+                <div class="card-body text-center">
+                    <div class="text-center" id="content"></div>
+                    <br>
+                    Inserte el id del pokemon<input id="buscarPokemon" type="text">
+                    <button onclick="getId()">Pokedex</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    ​
+    <script>
+
+        contenido = document.getElementById('content');
+        buscar = document.getElementById('buscarPokemon');
+
+        newPoke = (numId) => {
+            fetch(`https://pokeapi.co/api/v2/pokemon/${numId}`)
+                .then(data => data.json())
+                .then(pokemon => {
+                    console.log(pokemon)
+                    contenido.innerHTML = `    
+                            <img src="${pokemon.sprites.other['official-artwork'].front_default}" class="rounded-circle" alt="...">
+                            <h3>Nombre ${pokemon.name}</h3>
+                            <h2>Tipo ${pokemon.types[0].type.name}</h2> 
+                            <h2>Peso ${pokemon.weight}</h2>
+                            `
+                })
+                .catch((err) => {
+                    contenido.innerHTML = `
+                    <h2>POKEMON NO ENCONTRADO: ${err} </h2>
+                    <h3>Por favor intente de nuevo más tarde!</h3>
+                    `;
+                })
+        }
+
+        function pokedex() {
+            numId = Math.round(Math.random() * 807)
+            newPoke(numId);
+        }
+        function getId() {
+            newPoke(buscar.value);
+        }
+        pokedex()
+    </script>
+    ​
+    ​
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
